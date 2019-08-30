@@ -18,7 +18,7 @@ let urlDB;
      urlDB = 'mongodb://localhost:27017/cafe';
  }else{
     
-urlDB = 'mongodb+srv://cafe-user:luisparra@cluster0-igqhw.mongodb.net/test?retryWrites=true&w=majority';
+     urlDB = process.env.MONGO_URI;
  }
 
 process.env.URLDB = urlDB;
