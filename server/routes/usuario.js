@@ -2,9 +2,12 @@ const express = require('express');
 const app = express();
 
 const bcrypt = require("bcrypt");
+
+//SRIVE PARA LOS ARREGLOS, UNDERSCORE.JS
 const _ = require("underscore");
 
 const Usuario = require('../models/usuario');
+const { verificaToken, verificaAdminRol } = require("../middlewares/autentificacion");
 
 
 app.get('/', function (req, res) {
@@ -12,7 +15,14 @@ app.get('/', function (req, res) {
 });
 
 //TODO CON LA DOCUMENTACION DE MONGOOSE
-app.get("/usuario", (req, res) => {
+//funcion con el middleware integrado
+app.get("/usuario", verificaToken, (req, res) => {
+
+    // return res.json({
+    //     usuario: req.usuario,
+    //     nombre: req.usuario.nombre,
+    //     email: req.usuario.email
+    // })
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
@@ -47,7 +57,7 @@ app.get("/usuario", (req, res) => {
 
 
 
-app.post("/usuario", (req, res) => {
+app.post("/usuario", [verificaToken, verificaAdminRol], (req, res) => {
     let body = req.body;
 
     let usuario = new Usuario({
@@ -75,7 +85,7 @@ app.post("/usuario", (req, res) => {
 
 
 
-app.put("/usuario/:id", (req, res) => {
+app.put("/usuario/:id", [verificaToken, verificaAdminRol], (req, res) => {
     let id = req.params.id;
     let body = _.pick(req.body, ['nombre','email','img','role','estado'] );
 
@@ -95,7 +105,7 @@ app.put("/usuario/:id", (req, res) => {
  
 });
 
-app.delete("/usuario/:id", (req, res) => {
+app.delete("/usuario/:id", [verificaToken, verificaAdminRol], (req, res) => {
     let id = req.params.id;
 
     let cambiaEstado = {

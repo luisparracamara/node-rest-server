@@ -29,7 +29,7 @@ let usuarioSchema = new Schema({
     },
     role:{
         type: String,
-        default: "USER_ROL",
+        default: "USER_ROLE",
         enum: rolesValidos
     },
     estado:{
@@ -43,6 +43,8 @@ let usuarioSchema = new Schema({
 
 });
 
+
+//ESTO ES PARA NO MOSTRAR LA CONTRASEÑA EN EL JSON Y QUE NO LA PUEDAN VER PARA DESENCRIPTAR
 usuarioSchema.methods.toJSON = function(){
     let user = this;
     let userObject = user.toObject();
