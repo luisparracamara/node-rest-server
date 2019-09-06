@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 let verificaToken = (req,res,next) =>{
     let token = req.get('token');
 
+    //verificar que el token exista
     jwt.verify(token, process.env.SEED, (err,decoded) => {
         if (err) {
             return res.status(401).json({
@@ -16,6 +17,7 @@ let verificaToken = (req,res,next) =>{
             })
         }
 
+        
         req.usuario = decoded.usuario;
         next();
     })
